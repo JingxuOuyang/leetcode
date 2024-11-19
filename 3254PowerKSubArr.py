@@ -4,12 +4,12 @@ class Solution:
         count = 1
         n = len(nums)
         for i in range(1, k - 1):
-            if nums[i] > nums[i - 1]:
+            if nums[i] == nums[i - 1] + 1:
                 count += 1
             else:
                 count = 1
         for i in range(n - k + 1):
-            if nums[i + k - 1] > nums[i + k - 2]:
+            if nums[i + k - 1] == nums[i + k - 2] + 1:
                 count += 1
             else:
                 count = 1

@@ -1,5 +1,5 @@
 from typing import List
-
+from collections import Counter
 # Constraints:
 
 # m == matrix.length
@@ -8,34 +8,12 @@ from typing import List
 # matrix[i][j] is either 0 or 1.
 class Solution:
     def maxEqualRowsAfterFlips(self, matrix: List[List[int]]) -> int:
-        bit_per_num = 60
-        large_num_width = (300 - 1) // bit_per_num + 1
+        pat_freq = Counter()
         m, n = len(matrix), len(matrix[0])
-        masks = [0] * large_num_width
-        for i in range(large_num_width):
-            if (i + 1) * bit_per_num >= n:
-                a = (n % bit_per_num)
-                if a == 0:
-                    a = bit_per_num
-                masks[i] = ((1 << a) - 1)
-                break
-            masks[i] = (1 << bit_per_num) - 1
-        counts = dict()
-        for y in range(m):
-            state = [0] * large_num_width
-            for x in range(n):
-                if matrix[y][x] == 0:
-                    i = x // bit_per_num
-                    j = x % bit_per_num
-                    state[i] |= (1 << j)
-            if matrix[y][0] == 0:
-                state = [~x & mask for x, mask in zip(state, masks)]
-            state = tuple(state)
-            if state in counts:
-                counts[state] += 1
-            else:
-                counts[state] = 1
-        return max(counts.values())
+        for r in matrix:
+            pattern = tuple(r) if r[0] == 0 else tuple(bit ^ 1 for bit in r)
+            pat_freq[pattern] += 1
+        return max(pat_freq.values())
 
 if __name__ == "__main__":
     s = Solution()

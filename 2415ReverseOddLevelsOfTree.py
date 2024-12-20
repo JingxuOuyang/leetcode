@@ -14,8 +14,10 @@ def transval(node:TreeNode, peerNode:TreeNode, level:int):
     if node.left is not None:
         transval(node.left, peerNode.right, level + 1)
         transval(node.right, peerNode.left, level + 1)
+     
 class Solution:
     def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         if root.left is None:
             return root
-        return transval(root.left, root.right, 1)
+        transval(root.left, root.right, 1)
+        return root

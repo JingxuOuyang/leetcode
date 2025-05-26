@@ -13,4 +13,20 @@ class Solution:
         for i in range(n):
             if indegrees[i] == 0:
                 q.append(i)
-        
+        found = 0
+        while q:
+            u = q.popleft()
+            dp[u][ord(colors[u]) - ord('a')] += 1
+            found += 1
+            for v in routes[u]:
+                indegrees[v] -= 1
+                for i in range(26):
+                    dp[v][i] = max(dp[v][i], dp[u][i])
+                if indegrees[v] == 0:
+                    q.append(v)
+        if found != n:
+            return -1
+        ans = 0
+        for i in range(n):
+            ans = max(ans, max(dp[i]))
+        return ans
